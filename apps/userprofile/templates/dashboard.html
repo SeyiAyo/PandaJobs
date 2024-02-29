@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+    <h1 class="title">Dashboard</h1>
+    <p>Welcome, {{ request.user.username }}!</p>
+
+    {% if userprofile.is_employer %}
+        <h2 class="subtitle">Jobs</h2>
+
+        {% for job in request.user.jobs.all %}
+            <div class="job">
+                <p>{{ job.title }}</p>
+            </div>
+        {% empty %}
+            <p>You don't have any jobs yet.</p>
+        {% endfor %}
+    {% else %}
+        <p>You are a job seeker.</p>
+    {% endif %}
+{% endblock %}
