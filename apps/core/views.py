@@ -6,7 +6,7 @@ from apps.userprofile.models import UserProfile
 from apps.jobs.models import Job
 
 def frontpage(request):
-    jobs = Job.objects.all()[0:3]
+    jobs = Job.objects.all()[0:10]
     
     
     return render(request, 'frontpage.html', {'jobs':jobs})

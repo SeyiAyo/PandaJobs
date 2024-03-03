@@ -10,4 +10,6 @@
     <p>{{ job.summary }}</p>
 
     <p>{{ job.full_description }}</p>
+
+    <a href="{% url 'apply' job.id %}" class="button is-success">Apply for Job</a>
 {% endblock %}
