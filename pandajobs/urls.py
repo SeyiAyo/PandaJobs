@@ -22,4 +22,5 @@ urlpatterns = [
     path('', include('apps.core.urls')),
     path('jobs/', include('apps.jobs.urls')),
     path('userprofile/', include('apps.userprofile.urls')),
+    path('notifications/', include('apps.notifications.urls')),
 ]

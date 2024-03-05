@@ -4,6 +4,9 @@ from django.contrib.auth.decorators import login_required
 from apps.jobs.models import JobApplication, Job
 from .models import Message
 
+from apps.notifications.utulities import create_notification
+
+
 @login_required
 def dashboard(request):
     return render(request, 'dashboard.html', {'userprofile':request.user.userprofile})
@@ -20,6 +23,8 @@ def view_application(request, application_id):
         
         if content:
             message = Message.objects.create(application=application, content=content, created_by=request.user)
+            
+            create_notification(request, application.created_by, 'message', extra_id=application.id)
             
             return redirect('view_application', application_id=application.id)
     return render(request, 'view_application.html', {'application':application})
