@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-5z0#1a49u=mm%a@ui*y2r1b77fkq(=@qdt1ei=95f^72=poju^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 LOGIN_REDIRECT_URL = 'frontpage'
 LOGOUT_REDIRECT_URL = 'frontpage'
@@ -129,7 +129,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'static'
+STATICDIRS = [
+    os.path.join(BASE_DIR, 'apps/core/static'),
+    os.path.join(BASE_DIR, 'apps/jobs/static'),
+    os.path.join(BASE_DIR, 'apps/userprofile/static'),
+    os.path.join(BASE_DIR, 'apps/notifications/static'),
+]
 
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
