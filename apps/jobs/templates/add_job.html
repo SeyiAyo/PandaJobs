@@ -107,7 +107,7 @@
         },
         delimiters: ['[[', ']]'],
         methods: {
-            validateForm() {
+            validateForm(e) {
                 this.errors = [];
 
                 if (this.title === '') {
@@ -126,8 +126,13 @@
                     this.errors.push('Company size is required')
                 }
 
-                // Return true if there are no errors
-                return this.errors.length === 0;
+                if (this.errors.length) {
+                    e.preventDefault()
+
+                    return false
+                } else {
+                    return true
+                }
             }
         }
     }

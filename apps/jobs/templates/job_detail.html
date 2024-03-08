@@ -3,13 +3,26 @@
 {% block title %}{{ job.title }}{% endblock %}
 
 {% block content %}
-    <h1>{{ job.title }}</h1>
+    <div class="container mx-auto px-4">
+        <h1 class="text-3xl font-bold mb-4">{{ job.title }}</h1>
 
-    <p>{{ job.company }}</p>
+        <div class="bg-gray-100 p-4 rounded-lg mb-4">
+            <h2 class="text-lg font-semibold mb-2">About Job:</h2>
+            <p>{{ job.summary }}</p>
+        </div>
 
-    <p>{{ job.summary }}</p>
+        <div class="bg-gray-100 p-4 rounded-lg mb-4">
+            <h2 class="text-lg font-semibold mb-2">Company Details:</h2>
+            <p><b>Company name:</b> {{ job.company_name }}</p>
+            <p><b>Company Location:</b> {{ job.company_location }}</p>
+            <p><b>Company size:</b> {{ job.get_company_size_display }}</p>
+        </div>
 
-    <p>{{ job.full_description }}</p>
+        <div class="bg-gray-100 p-4 rounded-lg mb-4">
+            <h2 class="text-lg font-semibold mb-2">Full Description:</h2>
+            <p>{{ job.full_description }}</p>
+        </div>
 
-    <a href="{% url 'apply' job.id %}" class="button is-success">Apply for Job</a>
+        <a href="{% url 'apply' job.id %}" class="inline-block px-6 py-3 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition duration-300">Apply for Job</a>
+    </div>
 {% endblock %}

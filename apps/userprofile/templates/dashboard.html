@@ -3,40 +3,45 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
-    <h1 class="title">Dashboard</h1>
-    <p>Welcome, {{ request.user.username }}!</p>
+    <h1 class="text-2xl font-bold mb-4">Dashboard</h1>
+    <p class="mb-4">Welcome, {{ request.user.username }}!</p>
 
     {% if userprofile.is_employer %}
+        <h2 class="text-xl font-semibold mb-2">Add Job</h2>
+        <a href="{% url 'add_job' %}" class="inline-block px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition duration-300">Add Job</a>
 
-        <h2 class="subtitle">Add Job</h2>
-        <a href="{% url 'add_job' %}" class="button is-success">Add Job</a>
+        <hr class="my-4">
 
-        <div class="is-divider"></div>
-        <hr>
-        <h2 class="subtitle">Jobs Posted</h2>
+        <h2 class="text-xl font-semibold mb-2">Jobs Posted</h2>
 
-        {% for job in request.user.jobs.all %}
-            <div class="job">
-                <p>{{ job.title }}</p>
-                <a class="button is-success" href="{% url 'view_dashboard_job' job.id %}">View Job</a>
+        {% if request.user.jobs.all %}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {% for job in request.user.jobs.all %}
+                    <div class="bg-white p-4 rounded-lg shadow-md">
+                        <p class="font-semibold">{{ job.title }}</p>
+                        <a href="{% url 'view_dashboard_job' job.id %}" class="inline-block mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300 hover:shadow-md">View Job</a>
+                    </div>
+                {% endfor %}
             </div>
-        {% empty %}
-            <p>You don't have any jobs yet.</p>
-        {% endfor %}
+        {% else %}
+            <p class="mt-4">You don't have any jobs yet.</p>
+        {% endif %}
     {% else %}
+        <hr class="my-4">
 
-    <div class="is-divider"></div>
-    <hr>
-    
-        <h2 class="subtitle">Job Applications</h2>
+        <h2 class="text-xl font-semibold mb-2">Job Applications</h2>
 
-        {% for application in request.user.applications.all %}
-            <div class="application">
-                <p>{{ application.job.title }}</p>
-                <a href="{% url 'view_application' application.id %}">View Application</a>
+        {% if request.user.applications.all %}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {% for application in request.user.applications.all %}
+                    <div class="bg-white p-4 rounded-lg shadow-md">
+                        <p class="font-semibold">{{ application.job.title }}</p>
+                        <a href="{% url 'view_application' application.id %}" class="inline-block mt-2 px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition duration-300 hover:shadow-md">View Application</a>
+                    </div>
+                {% endfor %}
             </div>
-        {% empty %}
-            <p>You don't have any applications yet.</p>
-        {% endfor %}
+        {% else %}
+            <p class="mt-4">You don't have any applications yet.</p>
+        {% endif %}
     {% endif %}
 {% endblock %}

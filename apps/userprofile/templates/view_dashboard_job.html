@@ -1,7 +1,20 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <h2 class="title">View Job - {{ job.title }}</h2>
+
+    <b>About Job: </b>{{ job.summary }}</br>
+
+    <b>Company name: </b>{{ job.company_name }}<br>
+
+    <b>Company Location: </b>{{ job.company_location }}</br>
+
+    <b>Company size: </b>{{ job.get_company_size_display }}</br>
+
+    <hr>
+
     <h2 class="title">View Job Applicants - {{ job.title }}</h2>
+
 
     {% for application in job.applications.all %}
         <a class="button is-success" href="{% url 'view_application' application.id %}">{{ application.created_by.username }}</a>
