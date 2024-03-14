@@ -13,9 +13,9 @@
 
         <div class="bg-gray-100 p-4 rounded-lg mb-4">
             <h2 class="text-lg font-semibold mb-2">Company Details:</h2>
-            <p><b>Company name:</b> {{ job.company_name }}</p>
-            <p><b>Company Location:</b> {{ job.company_location }}</p>
-            <p><b>Company size:</b> {{ job.get_company_size_display }}</p>
+            {% if job.company_name %}<p><b>Company name:</b> {{ job.company_name }}</p>{% endif %}
+            {% if job.company_location %}<p><b>Company Location:</b> {{ job.company_location }}</p>{% endif %}
+            {% if job.company_size %}<p><b>Company size:</b> {{ job.get_company_size_display }}</p>{% endif %}
         </div>
 
         <div class="bg-gray-100 p-4 rounded-lg mb-4">

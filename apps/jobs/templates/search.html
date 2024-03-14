@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Search{% endblock %}
+
+{% block content %}
+    <div id="search-app" class="container mx-auto px-4">
+        <h1 class="text-3xl font-bold mb-4">Search</h1>
+
+        <form v-on:submit.prevent="performSearch()">
+            <div class="mb-4">
+                <div class="flex items-center space-x-2">
+                    <div class="field">
+                        <label>Query</label>
+
+                        <div class="control">
+                            <input class="input" type="text" name="query">
+                        </div>
+                    </div>
+                </div>
+        </form>
+
+
+{% endblock %}

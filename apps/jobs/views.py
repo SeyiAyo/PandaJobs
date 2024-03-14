@@ -5,6 +5,7 @@ from .forms import AddJobForm, ApplicationForm
 
 from apps.notifications.utulities import create_notification
 
+
 def job_detail(request, job_id):
     job = Job.objects.get(pk=job_id)
     
@@ -48,3 +49,8 @@ def apply(request, job_id):
         form = ApplicationForm()
     
     return render(request, 'apply.html', {'form':form, 'job':job})
+
+
+def search(request):
+    
+    return render(request, 'search.html')
