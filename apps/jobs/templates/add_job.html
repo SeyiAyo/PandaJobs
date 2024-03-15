@@ -1,93 +1,70 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div id="add-job-app">
-        <h1 class="title">Add Job</h1>
+    <div id="add-job-app" class="container mx-auto px-4">
+        <h1 class="text-3xl font-bold mb-4">Add Job</h1>
 
         <form action="" method="post" v-on:submit.prevent="validateForm()">
             {% csrf_token %}
 
             {% if form.errors %}
                 {% for error in form.errors %}
-                    <div class="notification is-danger">
+                    <div class="bg-red-500 text-white px-4 py-2 mb-4 rounded">
                         {{ error }}
                     </div>
                 {% endfor %}
             {% endif %}
 
-            <div class="notification is-danger" v-if="errors && errors.length">
-                <p v-for="error in errors">
-                    [[ error ]]
-                </p>
+            <div v-if="errors && errors.length" class="bg-red-500 text-white px-4 py-2 mb-4 rounded">
+                <p v-for="error in errors" class="mb-1">[[ error ]]</p>
             </div>
             
 
-            <!-- {% for field in form %}
-                <div class="field">
-                    <label>{{ field.label }}</label>
-                    {{ field }}
-                </div>
-            {% endfor %} -->
+            <div class="mb-4">
+                <label class="block mb-2" for="id_title">Title</label>
 
-            <div class="field">
-                <label>Title</label>
-
-                <div class="control">
-                    <input class="input" type="text" name="title" id="id_title" v-model="title">
-                </div>
+                <input class="input w-full" type="text" name="title" id="id_title" v-model="title">
             </div>
 
-            <div class="field">
-                <label>Summary</label>
+            <div class="mb-4">
+                <label class="block mb-2" for="id_summary">Summary</label>
 
-                <div class="control">
-                    <textarea class="textarea" name="summary" id="id_summary" v-model="summary"></textarea>
-                </div>
+                <textarea class="textarea w-full" name="summary" id="id_summary" v-model="summary"></textarea>
             </div>
 
-            <div class="field">
-                <label>Full Description</label>
+            <div class="mb-4">
+                <label class="block mb-2" for="id_full_description">Full Description</label>
 
-                <div class="control">
-                    <textarea class="textarea" name="full_description" id="id_full_description"></textarea>
-                </div>
+                <textarea class="textarea w-full" name="full_description" id="id_full_description"></textarea>
             </div>
 
-            <div class="field">
-                <label>Company Name</label>
+            <div class="mb-4">
+                <label class="block mb-2" for="id_company_name">Company Name</label>
 
-                <div class="control">
-                    <input class="input" type="text" name="company_name" id="id_company_name" v-model="company_name">
-                </div>
+                <input class="input w-full" type="text" name="company_name" id="id_company_name" v-model="company_name">
             </div>
 
-            <div class="field">
-                <label>Company Location</label>
+            <div class="mb-4">
+                <label class="block mb-2" for="id_company_location">Company Location</label>
                 
-                <div class="control">
-                    <input class="input" type="text" name="company_location" id="id_company_location">
+                <input class="input w-full" type="text" name="company_location" id="id_company_location">
+            </div>
+
+            <div class="mb-4">
+                <label class="block mb-2" for="id_company_size">Company Size</label>
+
+                <div class="select">
+                    <select name="company_size" id="id_company_size" v-model="company_size">
+                        <option value="size_1_9">1-9</option>
+                        <option value="size_10_49">10-49</option>
+                        <option value="size_50_99">50-99</option>
+                        <option value="size_100">100+</option>
+                    </select>
                 </div>
             </div>
 
-            <div class="field">
-                <label>Company Size</label>
-
-                <div class="control">
-                    <div class="select">
-                        <select name="company_size" id="id_company_size" v-model="company_size">
-                            <option value="size_1_9">1-9</option>
-                            <option value="size_10_49">10-49</option>
-                            <option value="size_50_99">50-99</option>
-                            <option value="size_100">100+</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="field">
-                <div class="control">
-                    <button class="button is-success">Submit</button>
-                </div>
+            <div class="mb-4">
+                <button class="button bg-green-500 text-white py-2 px-4" type="submit">Submit</button>
             </div>
         </form>
     </div>
@@ -111,27 +88,27 @@
                 this.errors = [];
 
                 if (this.title === '') {
-                    this.errors.push('Title is required')
+                    this.errors.push('Title is required');
                 }
 
                 if (this.summary === '') {
-                    this.errors.push('Summary is required')
+                    this.errors.push('Summary is required');
                 }
 
                 if (this.company_name === '') {
-                    this.errors.push('Company name is required')
+                    this.errors.push('Company name is required');
                 }
 
                 if (this.company_size === '') {
-                    this.errors.push('Company size is required')
+                    this.errors.push('Company size is required');
                 }
 
                 if (this.errors.length) {
-                    e.preventDefault()
+                    e.preventDefault();
 
-                    return false
+                    return false;
                 } else {
-                    return true
+                    return true;
                 }
             }
         }

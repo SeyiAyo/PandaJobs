@@ -6,18 +6,110 @@
     <div id="search-app" class="container mx-auto px-4">
         <h1 class="text-3xl font-bold mb-4">Search</h1>
 
-        <form v-on:submit.prevent="performSearch()">
-            <div class="mb-4">
-                <div class="flex items-center space-x-2">
-                    <div class="field">
-                        <label>Query</label>
-
-                        <div class="control">
-                            <input class="input" type="text" name="query">
-                        </div>
-                    </div>
+        <form v-on:submit.prevent="performSearch()" class="mb-4">
+            <div class="flex items-center space-x-2">
+                <div class="w-1/2">
+                    <label for="query" class="block text-sm font-medium text-gray-700">Query</label>
+                    <input id="query" name="query" v-model="query" type="text" required
+                        class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                 </div>
+
+                <div class="w-1/2">
+                    <label for="company_size" class="block text-sm font-medium text-gray-700">Company Size</label>
+                    <select id="company_size" name="company_size" v-model="company_size"
+                            class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        <option value="" selected>All</option>
+                        <option value="size_1-9">1-9</option>
+                        <option value="size_10-49">10-49</option>
+                        <option value="size_50-99">50-99</option>
+                        <option value="size_100">100+</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit"
+                        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Search
+                </button>
+            </div>
         </form>
 
+        <div v-if="jobs.length" class="mt-8">
+            <hr>
+
+            <div v-for="job in jobs" v-bind:key="job.id" class="notification mt-2">
+                <h3 class="text-lg font-bold">[[ job.title ]]</h3>
+                <p>[[ job.company_name ]]</p>
+                <a v-bind:href="job.url">View Details</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+<script>
+        const SearchApp = {
+            data() {
+                return {
+                    query: '',
+                    company_size: '',
+                    jobs: []
+                }
+            },
+            delimiters: ['[[', ']]'],
+            methods: {
+                performSearch() {
+                    if (!this.query) {
+                        alert('Please enter a search query.');
+                        return;
+                    }
+
+                    var data = {
+                        'query': this.query,
+                        'company_size': this.company_size
+                    }
+
+                    fetch('/api/search/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': getCookie('csrftoken') // Use a function to get CSRF token
+                        },
+                        body: JSON.stringify(data)
+                    })
+                    .then((response) => {
+                        return response.json()
+                    })
+                    .then((result) => {
+                        console.log('Success', result.jobs);
+                        this.jobs = result.jobs
+                    })
+                    .catch((error) => {
+                        console.log('Error', error); // Fix the error variable
+                        alert('An error occurred while performing the search.');
+                    });
+                }
+            }
+        };
+
+        Vue.createApp(SearchApp).mount('#search-app');
+
+        // Function to get CSRF token from cookie
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
 
 {% endblock %}
