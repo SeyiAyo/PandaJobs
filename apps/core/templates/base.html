@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -71,6 +72,7 @@
         }
     </style>
 </head>
+
 <body>
     <div id="root">
         <nav class="bg-white shadow-md">
@@ -150,6 +152,9 @@
             document.querySelector('.drawer').classList.remove('open');
             this.classList.remove('open');
         });
-    </script>   
+    </script>
+    {% block scripts %}
+
+    {% endblock %}
 </body>
 </html>

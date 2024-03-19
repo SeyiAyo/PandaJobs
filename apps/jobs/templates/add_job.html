@@ -1,119 +1,104 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div id="add-job-app" class="container mx-auto px-4">
-        <h1 class="text-3xl font-bold mb-4">Add Job</h1>
+<div id="add-job-app" class="container mx-auto px-4">
+    <h1 class="text-3xl font-bold mb-4">Add Job</h1>
 
-        <form action="" method="post" v-on:submit.prevent="validateForm()">
-            {% csrf_token %}
-
-            {% if form.errors %}
-                {% for error in form.errors %}
-                    <div class="bg-red-500 text-white px-4 py-2 mb-4 rounded">
-                        {{ error }}
-                    </div>
-                {% endfor %}
-            {% endif %}
-
-            <div v-if="errors && errors.length" class="bg-red-500 text-white px-4 py-2 mb-4 rounded">
-                <p v-for="error in errors" class="mb-1">[[ error ]]</p>
-            </div>
-            
-
-            <div class="mb-4">
-                <label class="block mb-2" for="id_title">Title</label>
-
-                <input class="input w-full" type="text" name="title" id="id_title" v-model="title">
-            </div>
-
-            <div class="mb-4">
-                <label class="block mb-2" for="id_summary">Summary</label>
-
-                <textarea class="textarea w-full" name="summary" id="id_summary" v-model="summary"></textarea>
-            </div>
-
-            <div class="mb-4">
-                <label class="block mb-2" for="id_full_description">Full Description</label>
-
-                <textarea class="textarea w-full" name="full_description" id="id_full_description"></textarea>
-            </div>
-
-            <div class="mb-4">
-                <label class="block mb-2" for="id_company_name">Company Name</label>
-
-                <input class="input w-full" type="text" name="company_name" id="id_company_name" v-model="company_name">
-            </div>
-
-            <div class="mb-4">
-                <label class="block mb-2" for="id_company_location">Company Location</label>
-                
-                <input class="input w-full" type="text" name="company_location" id="id_company_location">
-            </div>
-
-            <div class="mb-4">
-                <label class="block mb-2" for="id_company_size">Company Size</label>
-
-                <div class="select">
-                    <select name="company_size" id="id_company_size" v-model="company_size">
-                        <option value="size_1_9">1-9</option>
-                        <option value="size_10_49">10-49</option>
-                        <option value="size_50_99">50-99</option>
-                        <option value="size_100">100+</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="mb-4">
-                <button class="button bg-green-500 text-white py-2 px-4" type="submit">Submit</button>
-            </div>
-        </form>
+    <div id="error-messages" class="bg-red-500 text-white px-4 py-2 mb-4 rounded" style="display: none;">
     </div>
-{% endblock %}
 
-{% block scripts %}
+    <form action="" method="post" id="job-form">
+        {% csrf_token %}
+        
+        <div class="mb-4">
+            <label class="block mb-2" for="id_title">Title</label>
+            <input class="input w-full" type="text" name="title" id="id_title">
+        </div>
+
+        <div class="mb-4">
+            <label class="block mb-2" for="id_summary">Summary</label>
+            <textarea class="textarea w-full" name="summary" id="id_summary"></textarea>
+        </div>
+
+        <div class="mb-4">
+            <label class="block mb-2" for="id_full_description">Full Description</label>
+            <textarea class="textarea w-full" name="full_description" id="id_full_description"></textarea>
+        </div>
+
+        <div class="mb-4">
+            <label class="block mb-2" for="id_company_name">Company Name</label>
+            <input class="input w-full" type="text" name="company_name" id="id_company_name">
+        </div>
+
+        <div class="mb-4">
+            <label class="block mb-2" for="id_company_location">Company Location</label>
+            <input class="input w-full" type="text" name="company_location" id="id_company_location">
+        </div>
+
+        <div class="mb-4">
+            <label class="block mb-2" for="id_company_size">Company Size</label>
+            <div class="select">
+                <select name="company_size" id="id_company_size">
+                    <option value="size_1_9">1-9</option>
+                    <option value="size_10_49">10-49</option>
+                    <option value="size_50_99">50-99</option>
+                    <option value="size_100">100+</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <button class="button bg-green-500 text-white py-2 px-4" type="button" id="submit-btn">Submit</button>
+        </div>
+    </form>
+</div>
+
 <script>
-    const AddJobApp = {
-        data() {
-            return {
-                title: '',
-                summary: '',
-                company_name: '',
-                company_size: 'size_1_9',
-                errors: [] 
-            }
-        },
-        delimiters: ['[[', ']]'],
-        methods: {
-            validateForm(e) {
-                this.errors = [];
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('submit-btn').addEventListener('click', function() {
+        validateForm();
+    });
 
-                if (this.title === '') {
-                    this.errors.push('Title is required');
-                }
+    function validateForm() {
+        var errors = [];
 
-                if (this.summary === '') {
-                    this.errors.push('Summary is required');
-                }
+        var title = document.getElementById('id_title').value.trim();
+        if (!title) {
+            errors.push('Title is required');
+        }
 
-                if (this.company_name === '') {
-                    this.errors.push('Company name is required');
-                }
+        var summary = document.getElementById('id_summary').value.trim();
+        if (!summary) {
+            errors.push('Summary is required');
+        }
 
-                if (this.company_size === '') {
-                    this.errors.push('Company size is required');
-                }
+        var companyName = document.getElementById('id_company_name').value.trim();
+        if (!companyName) {
+            errors.push('Company name is required');
+        }
 
-                if (this.errors.length) {
-                    e.preventDefault();
+        var companySize = document.getElementById('id_company_size').value.trim();
+        if (!companySize) {
+            errors.push('Company size is required');
+        }
 
-                    return false;
-                } else {
-                    return true;
-                }
-            }
+        if (errors.length > 0) {
+            displayErrors(errors);
+        } else {
+            document.getElementById('job-form').submit();
         }
     }
 
-    Vue.createApp(AddJobApp).mount('#add-job-app');
+    function displayErrors(errors) {
+        var errorMessages = document.getElementById('error-messages');
+        errorMessages.innerHTML = '';
+        errors.forEach(function(error) {
+            var p = document.createElement('p');
+            p.textContent = error;
+            errorMessages.appendChild(p);
+        });
+        errorMessages.style.display = 'block';
+    }
+});
 </script>
 {% endblock %}

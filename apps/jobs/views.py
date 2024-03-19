@@ -1,5 +1,7 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse
 from . models import Job
 from .forms import AddJobForm, ApplicationForm
 
@@ -52,5 +54,12 @@ def apply(request, job_id):
 
 
 def search(request):
-    
+    if request.method == 'POST':
+        query = request.POST.get('query')
+        company_name = request.POST.get('company_name')
+        company_location = request.POST.get('company_location')
+        company_size = request.POST.get('company_size')
+
+        return HttpResponseRedirect(reverse('api_search') + f'?query={query}&company_name={company_name}&company_location={company_location}&company_size={company_size}')
+
     return render(request, 'search.html')
