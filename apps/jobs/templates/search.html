@@ -7,14 +7,14 @@
     <h1 class="text-3xl font-bold mb-4">Search</h1>
 
     <form id="search-form" class="mb-4">
-        <div class="flex items-center space-x-2">
-            <div class="w-1/2">
+        <div class="flex flex-wrap -mx-2">
+            <div class="w-full md:w-1/2 px-2 mb-4 md:mb-0">
                 <label for="query" class="block text-sm font-medium text-gray-700">Query</label>
                 <input id="query" name="query" type="text" required
                     class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
             </div>
 
-            <div class="w-1/2">
+            <div class="w-full md:w-1/2 px-2">
                 <label for="company_size" class="block text-sm font-medium text-gray-700">Company Size</label>
                 <select id="company_size" name="company_size"
                         class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
@@ -35,7 +35,10 @@
         </div>
     </form>
 
-    <div id="job-results" class="mt-8"></div>
+    <div id="job-results" class="mt-8 container mx-auto px-4">
+        <!-- Search results will be displayed here -->
+    </div>
+    
 </div>
 {% endblock %}
 

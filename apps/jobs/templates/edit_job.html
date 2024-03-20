@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="edit-job-app" class="container mx-auto px-4">
+    <h1 class="text-3xl font-bold mb-4">Edit Job</h1>
+
+    <div id="error-messages" class="bg-red-500 text-white px-4 py-2 mb-4 rounded" style="display: none;">
+    </div>
+
+    <form action="" method="post" id="job-form">
+        {% csrf_token %}
+        
+        <div class="mb-4">
+            <label class="block mb-2" for="id_title">Title</label>
+            <input class="input w-full" type="text" name="title" id="id_title" value="{% if job.title %}{{ job.title }}{% endif %}">
+        </div>
+
+        <div class="mb-4">
+            <label class="block mb-2" for="id_summary">Summary</label>
+            <textarea class="textarea w-full" name="summary" id="id_summary" value="{% if job.summary %}{{ job.summary }}{% endif %}"></textarea>
+        </div>
+
+        <div class="mb-4">
+            <label class="block mb-2" for="id_full_description">Full Description</label>
+            <textarea class="textarea w-full" name="full_description" id="id_full_description">{% if job.full_description %}{{ job.full_description }}{% endif %}</textarea>
+        </div>
+
+        <div class="mb-4">
+            <label class="block mb-2" for="id_company_name">Company Name</label>
+            <input class="input w-full" type="text" name="company_name" id="id_company_name" value="{% if job.company_name %}{{ job.company_name }}{% endif %}">
+        </div>
+
+        <div class="mb-4">
+            <label class="block mb-2" for="id_company_location">Company Location</label>
+            <input class="input w-full" type="text" name="company_location" id="id_company_location" value="{% if job.company_location %}{{ job.company_location }}{% endif %}">
+        </div>
+
+        <div class="mb-4">
+            <label class="block mb-2" for="id_company_size" value = "{% if job.company_size %}{{ job.company_size }}{% endif %}">Company Size</label>
+            <div class="select">
+                <select name="company_size" id="id_company_size">
+                    <option value="size_1_9">1-9</option>
+                    <option value="size_10_49">10-49</option>
+                    <option value="size_50_99">50-99</option>
+                    <option value="size_100">100+</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <label class="block mb-2" for="id_job_status">Job Status</label>
+            <div class="select">
+                <select name="job_status" id="id_job_status">
+                    <option value="open"{% if job.job_status == 'open' %} selected{% endif %}>Open</option>
+                    <option value="closed"{% if job.job_status == 'closed' %} selected{% endif %}>Closed</option>
+                    <option value="archived"{% if job.job_status == 'archived' %} selected{% endif %}>Archived</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <button class="button bg-green-500 text-white py-2 px-4" type="button" id="submit-btn">Save Changes</button>
+        </div>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('submit-btn').addEventListener('click', function() {
+        validateForm();
+    });
+
+    function validateForm() {
+        var errors = [];
+
+        var title = document.getElementById('id_title').value.trim();
+        if (!title) {
+            errors.push('Title is required');
+        }
+
+        var summary = document.getElementById('id_summary').value.trim();
+        if (!summary) {
+            errors.push('Summary is required');
+        }
+
+        var companyName = document.getElementById('id_company_name').value.trim();
+        if (!companyName) {
+            errors.push('Company name is required');
+        }
+
+        var companySize = document.getElementById('id_company_size').value.trim();
+        if (!companySize) {
+            errors.push('Company size is required');
+        }
+
+        if (errors.length > 0) {
+            displayErrors(errors);
+        } else {
+            document.getElementById('job-form').submit();
+        }
+    }
+
+    function displayErrors(errors) {
+        var errorMessages = document.getElementById('error-messages');
+        errorMessages.innerHTML = '';
+        errors.forEach(function(error) {
+            var p = document.createElement('p');
+            p.textContent = error;
+            errorMessages.appendChild(p);
+        });
+        errorMessages.style.display = 'block';
+    }
+});
+</script>
+{% endblock %}

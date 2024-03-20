@@ -18,7 +18,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {% for job in request.user.jobs.all %}
                     <div class="bg-white p-4 rounded-lg shadow-md">
-                        <p class="font-semibold">{{ job.title }}</p>
+                        <p class="font-semibold">{{ job.title }} ({{ job.get_status_display }})</p>
                         <a href="{% url 'view_dashboard_job' job.id %}" class="inline-block mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300 hover:shadow-md">View Job</a>
                     </div>
                 {% endfor %}

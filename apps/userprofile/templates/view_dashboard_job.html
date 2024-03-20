@@ -3,6 +3,8 @@
 {% block content %}
     <h2 class="title">View Job - {{ job.title }}</h2>
 
+    <a href="{% url 'edit_job' job.id %}" class="button is-info mb-4">Edit Job</a> | <a href="" class="button is-danger mb-4">Delete Job</a><br>
+
     <b>About Job: </b>{{ job.summary }}</br>
 
     <b>Company name: </b>{{ job.company_name }}<br>

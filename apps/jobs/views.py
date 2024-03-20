@@ -30,6 +30,22 @@ def add_job(request):
     
     return render(request, 'add_job.html', {'form':form})
 
+@login_required
+def edit_job(request, job_id):
+    job = Job.objects.get(pk=job_id, created_by=request.user)
+    if request.method == 'POST':
+        form = AddJobForm(request.POST, instance=job)
+        
+        if form.is_valid():
+            job = form.save(commit=False)
+            job.status = request.POST.get('status')
+            job.save()
+            
+            return redirect('dashboard')
+    else:
+        form = AddJobForm(instance=job)
+    
+    return render(request, 'edit_job.html', {'form':form, 'job':job})
 
 @login_required
 def apply(request, job_id):

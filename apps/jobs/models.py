@@ -15,6 +15,16 @@ class Job(models.Model):
         (SIZE_100, '100+'),
     )
     
+    OPEN = 'open'
+    CLOSED = 'closed'
+    ARCHIVED = 'archived'
+    
+    STATUS_CHOICES = (
+        (OPEN, 'Open'),
+        (CLOSED, 'Closed'),
+        (ARCHIVED, 'Archived'),
+    )
+    
     title = models.CharField(max_length=100)
     summary = models.TextField()
     full_description = models.TextField()
@@ -26,8 +36,7 @@ class Job(models.Model):
     created_by= models.ForeignKey(User, related_name='jobs', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    is_active = models.BooleanField(default=True)
-    
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=OPEN)    
     def __str__(self):
         return self.title
     
