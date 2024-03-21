@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django_countries.fields import CountryField
 
 
 class Job(models.Model):
@@ -31,6 +32,7 @@ class Job(models.Model):
     
     company_name = models.CharField(max_length=100)
     company_location = models.CharField(max_length=100, blank=True, null=True)
+    company_country = CountryField(blank_label="(select country)", default="Nigeria")
     company_size = models.CharField(max_length=20, choices=SIZE_CHOICES, default=SIZE_1_9)
     
     created_by= models.ForeignKey(User, related_name='jobs', on_delete=models.CASCADE)

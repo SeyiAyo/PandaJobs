@@ -12,15 +12,19 @@ def api_search(request):
         query = data.get('query', '')
         company_name = data.get('company_name', '')  # Use data.get() to handle missing keys
         company_location = data.get('company_location', '')
+        company_country = data.get('company_country', '')
         company_size = data.get('company_size', '')
 
-        jobs = Job.objects.filter(Q(title__icontains=query) | Q(summary__icontains=query) | Q(company_name__icontains=query) | Q(company_location__icontains=query) | Q(company_size__icontains=query))
+        jobs = Job.objects.filter(Q(title__icontains=query) | Q(summary__icontains=query) | Q(company_name__icontains=query) | Q(company_location__icontains=query) | Q(company_country__icontains=query) | Q(company_size__icontains=query))
 
         if company_name:
             jobs = jobs.filter(company_name=company_name)
 
         if company_location:
             jobs = jobs.filter(company_location=company_location)
+            
+        if company_country:
+            jobs = jobs.filter(company_country=company_country)
 
         if company_size:
             jobs = jobs.filter(company_size=company_size)

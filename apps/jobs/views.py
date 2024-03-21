@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from . models import Job
 from .forms import AddJobForm, ApplicationForm
+from django_countries import countries
 
 from apps.notifications.utulities import create_notification
 
@@ -28,7 +29,7 @@ def add_job(request):
     else:
         form = AddJobForm()
     
-    return render(request, 'add_job.html', {'form':form})
+    return render(request, 'add_job.html', {'form':form, 'countries':countries})
 
 @login_required
 def edit_job(request, job_id):
@@ -39,13 +40,14 @@ def edit_job(request, job_id):
         if form.is_valid():
             job = form.save(commit=False)
             job.status = request.POST.get('status')
+            job.company_name = request.POST.get('company_name')
             job.save()
             
             return redirect('dashboard')
     else:
         form = AddJobForm(instance=job)
     
-    return render(request, 'edit_job.html', {'form':form, 'job':job})
+    return render(request, 'edit_job.html', {'form':form, 'job':job, 'countries':countries})
 
 @login_required
 def apply(request, job_id):

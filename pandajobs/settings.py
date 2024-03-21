@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'apps.jobs',
     'apps.userprofile',
     'apps.notifications',
+    'django_countries',
 ]
 
 MIDDLEWARE = [

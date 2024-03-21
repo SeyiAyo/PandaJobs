@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load countries %}
+{% get_countries as countries %}
 
 {% block content %}
 <div id="add-job-app" class="container mx-auto px-4">
@@ -7,38 +9,49 @@
     <div id="error-messages" class="bg-red-500 text-white px-4 py-2 mb-4 rounded" style="display: none;">
     </div>
 
-    <form action="" method="post" id="job-form">
+    <form action="" method="post" id="job-form" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         {% csrf_token %}
         
         <div class="mb-4">
-            <label class="block mb-2" for="id_title">Title</label>
-            <input class="input w-full" type="text" name="title" id="id_title">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="id_title">Title</label>
+            <input class="input w-full border border-gray-300 rounded py-2 px-3 leading-tight focus:outline-none focus:border-indigo-500" type="text" name="title" id="id_title">
         </div>
 
         <div class="mb-4">
-            <label class="block mb-2" for="id_summary">Summary</label>
-            <textarea class="textarea w-full" name="summary" id="id_summary"></textarea>
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="id_summary">Summary</label>
+            <textarea class="textarea w-full border border-gray-300 rounded py-2 px-3 leading-tight focus:outline-none focus:border-indigo-500" name="summary" id="id_summary"></textarea>
         </div>
 
         <div class="mb-4">
-            <label class="block mb-2" for="id_full_description">Full Description</label>
-            <textarea class="textarea w-full" name="full_description" id="id_full_description"></textarea>
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="id_full_description">Full Description</label>
+            <textarea class="textarea w-full border border-gray-300 rounded py-2 px-3 leading-tight focus:outline-none focus:border-indigo-500" name="full_description" id="id_full_description"></textarea>
         </div>
 
         <div class="mb-4">
-            <label class="block mb-2" for="id_company_name">Company Name</label>
-            <input class="input w-full" type="text" name="company_name" id="id_company_name">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="id_company_name">Company Name</label>
+            <input class="input w-full border border-gray-300 rounded py-2 px-3 leading-tight focus:outline-none focus:border-indigo-500" type="text" name="company_name" id="id_company_name">
         </div>
 
         <div class="mb-4">
-            <label class="block mb-2" for="id_company_location">Company Location</label>
-            <input class="input w-full" type="text" name="company_location" id="id_company_location">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="id_company_location">Company Location</label>
+            <input class="input w-full border border-gray-300 rounded py-2 px-3 leading-tight focus:outline-none focus:border-indigo-500" type="text" name="company_location" id="id_company_location">
         </div>
 
         <div class="mb-4">
-            <label class="block mb-2" for="id_company_size">Company Size</label>
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="id_company_country">Country</label>
             <div class="select">
-                <select name="company_size" id="id_company_size">
+                <select name="company_country" id="id_company_country" class="block appearance-none w-full border border-gray-300 rounded py-2 px-3 leading-tight focus:outline-none focus:border-indigo-500">
+                    {% for code, name in countries %}
+                        <option value="{{ code }}">{{ name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="id_company_size">Company Size</label>
+            <div class="select">
+                <select name="company_size" id="id_company_size" class="block appearance-none w-full border border-gray-300 rounded py-2 px-3 leading-tight focus:outline-none focus:border-indigo-500">
                     <option value="size_1_9">1-9</option>
                     <option value="size_10_49">10-49</option>
                     <option value="size_50_99">50-99</option>
@@ -48,7 +61,7 @@
         </div>
 
         <div class="mb-4">
-            <button class="button bg-green-500 text-white py-2 px-4" type="button" id="submit-btn">Submit</button>
+            <button class="button bg-indigo-500 text-white py-2 px-4 rounded" type="button" id="submit-btn">Submit</button>
         </div>
     </form>
 </div>

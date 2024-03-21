@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load countries %}
+{% get_countries as countries %}
 
 {% block title %}Search{% endblock %}
 
@@ -12,6 +14,17 @@
                 <label for="query" class="block text-sm font-medium text-gray-700">Query</label>
                 <input id="query" name="query" type="text" required
                     class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+            </div>
+
+            <div class="w-full md:w-1/2 px-2 mb-4 md:mb-0">
+                <label for="company_country" class="block text-sm font-medium text-gray-700">Country</label>
+                <select id="company_country" name="company_country"
+                        class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                    <option value="" selected>All</option>
+                    {% for code, name in countries %}
+                        <option value="{{ code }}">{{ name }}</option>
+                    {% endfor %}
+                </select>
             </div>
 
             <div class="w-full md:w-1/2 px-2">
@@ -51,6 +64,7 @@
 
     function performSearch() {
         var query = document.getElementById('query').value.trim();
+        var companyCountry = document.getElementById('company_country').value.trim();
         var companySize = document.getElementById('company_size').value.trim();
 
         if (!query) {
@@ -60,6 +74,7 @@
 
         var data = {
             'query': query,
+            'company_country': companyCountry,
             'company_size': companySize
         }
 

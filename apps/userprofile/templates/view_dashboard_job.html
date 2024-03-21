@@ -1,24 +1,39 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2 class="title">View Job - {{ job.title }}</h2>
+    <div class="container mx-auto">
+        <h2 class="text-2xl font-bold mb-4">View Job - {{ job.title }}</h2>
+        
+        <a href="{% url 'edit_job' job.id %}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4 inline-block">Edit Job</a> 
+        <a href="" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mb-4 inline-block">Delete Job</a>
 
-    <a href="{% url 'edit_job' job.id %}" class="button is-info mb-4">Edit Job</a> | <a href="" class="button is-danger mb-4">Delete Job</a><br>
+        <div class="bg-white shadow-md rounded px-8 py-6 mb-8">
+            <div class="mb-4">
+                <p class="text-lg font-semibold">About Job:</p>
+                <p class="text-gray-700">{{ job.summary }}</p>
+            </div>
+            <div class="mb-4">
+                <p class="text-lg font-semibold">Company Name:</p>
+                <p class="text-gray-700">{{ job.company_name }}</p>
+            </div>
+            <div class="mb-4">
+                <p class="text-lg font-semibold">Company Location:</p>
+                <p class="text-gray-700">{{ job.company_location }}</p>
+            </div>
+            <div class="mb-4">
+                <p class="text-lg font-semibold">Company Country:</p>
+                <p class="text-gray-700">{{ job.company_country }}</p>
+            </div>
+            <div class="mb-4">
+                <p class="text-lg font-semibold">Company Size:</p>
+                <p class="text-gray-700">{{ job.get_company_size_display }}</p>
+            </div>
+        </div>
 
-    <b>About Job: </b>{{ job.summary }}</br>
+        <h2 class="text-2xl font-bold mb-4">View Job Applicants - {{ job.title }}</h2>
 
-    <b>Company name: </b>{{ job.company_name }}<br>
-
-    <b>Company Location: </b>{{ job.company_location }}</br>
-
-    <b>Company size: </b>{{ job.get_company_size_display }}</br>
-
-    <hr>
-
-    <h2 class="title">View Job Applicants - {{ job.title }}</h2>
-
-
-    {% for application in job.applications.all %}
-        <a class="button is-success" href="{% url 'view_application' application.id %}">{{ application.created_by.username }}</a>
-    {% endfor %}
+        {% for application in job.applications.all %}
+            <a href="{% url 'view_application' application.id %}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded inline-block mb-4">{{ application.created_by.username }}</a>
+        {% endfor %}
+    </div>
 {% endblock %}
