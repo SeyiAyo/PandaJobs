@@ -17,7 +17,7 @@
 
         <div class="mb-4">
             <label class="block mb-2" for="id_summary">Summary</label>
-            <textarea class="textarea w-full" name="summary" id="id_summary" value="{% if job.summary %}{{ job.summary }}{% endif %}"></textarea>
+            <textarea class="textarea w-full" name="summary" id="id_summary" value="{% if job.summary %}{{ job.summary }}{% endif %}">{% if job.summary %}{{ job.summary }}{% endif %}</textarea>
         </div>
 
         <div class="mb-4">
@@ -48,9 +48,9 @@
         </div>
 
         <div class="mb-4">
-            <label class="block mb-2" for="id_job_status">Job Status</label>
+            <label class="block mb-2" for="id_status">Job Status</label>
             <div class="select">
-                <select name="job_status" id="id_job_status">
+                <select name="status" id="id_status">
                     <option value="open"{% if job.job_status == 'open' %} selected{% endif %}>Open</option>
                     <option value="closed"{% if job.job_status == 'closed' %} selected{% endif %}>Closed</option>
                     <option value="archived"{% if job.job_status == 'archived' %} selected{% endif %}>Archived</option>

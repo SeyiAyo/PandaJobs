@@ -8,6 +8,7 @@ class AddJobForm(forms.ModelForm):
         fields = ['title', 'summary', 'full_description', 'company_name', 'company_location', 'company_size']
         
         
+        
 class ApplicationForm(forms.ModelForm):
     class Meta:
         model = JobApplication
