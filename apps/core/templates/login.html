@@ -9,8 +9,20 @@
                 <form method="post" action="" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
                     {% csrf_token %}
 
-                    {{ form | crispy }}
 
+                    {% if form.errors %}
+                        <div class="bg-red-500 text-white px-4 py-2 mb-4 rounded">
+                            {{ form.errors }}
+                        </div>
+                    {% endif %}
+
+                    {% for field in form %}
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field }}
+                        </div>
+                    {% endfor %}
+                    
                     <div class="mb-4">
                         <div class="flex items-center justify-between">
                             <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded" type="submit">Login</button>
