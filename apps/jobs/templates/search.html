@@ -51,7 +51,6 @@
     <div id="job-results" class="mt-8 container mx-auto px-4">
         <!-- Search results will be displayed here -->
     </div>
-    
 </div>
 {% endblock %}
 
@@ -105,27 +104,37 @@
     function displayJobs(jobs) {
         var jobResults = document.getElementById('job-results');
         jobResults.innerHTML = '';
-        jobs.forEach(function(job) {
-            var div = document.createElement('div');
-            div.classList.add('notification', 'mt-2');
 
-            var h3 = document.createElement('h3');
-            h3.classList.add('text-lg', 'font-bold');
-            h3.textContent = job.title;
+        if (jobs.length === 0) {
+            var noResultsMessage = document.createElement('p');
+            noResultsMessage.textContent = 'No jobs found.';
+            noResultsMessage.classList.add('text-red-500', 'font-bold', 'text-lg', 'my-4');
+            jobResults.appendChild(noResultsMessage);
+        } else {
+            jobs.forEach(function(job) {
+                var div = document.createElement('div');
+                div.classList.add('bg-white', 'p-6', 'rounded-lg', 'shadow-md', 'mb-4');
 
-            var p = document.createElement('p');
-            p.textContent = job.company_name;
+                var h3 = document.createElement('h3');
+                h3.classList.add('text-xl', 'font-bold', 'text-indigo-600', 'mb-2');
+                h3.textContent = job.title;
 
-            var a = document.createElement('a');
-            a.setAttribute('href', job.url);
-            a.textContent = 'View Details';
+                var companyPara = document.createElement('p');
+                companyPara.classList.add('text-gray-600', 'mb-2');
+                companyPara.textContent = 'Company: ' + job.company_name;
 
-            div.appendChild(h3);
-            div.appendChild(p);
-            div.appendChild(a);
+                var detailsLink = document.createElement('a');
+                detailsLink.classList.add('text-blue-500', 'hover:text-blue-700', 'font-bold');
+                detailsLink.setAttribute('href', job.url);
+                detailsLink.textContent = 'View Details';
 
-            jobResults.appendChild(div);
-        });
+                div.appendChild(h3);
+                div.appendChild(companyPara);
+                div.appendChild(detailsLink);
+
+                jobResults.appendChild(div);
+            });
+        }
     }
 
     // Function to get CSRF token from cookie
@@ -144,4 +153,5 @@
         return cookieValue;
     }
 </script>
+
 {% endblock %}

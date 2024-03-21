@@ -80,4 +80,4 @@ def search(request):
 
         return HttpResponseRedirect(reverse('api_search') + f'?query={query}&company_name={company_name}&company_location={company_location}&company_size={company_size}')
 
-    return render(request, 'search.html')
+    return render(request, 'search.html', {'countries':countries})
