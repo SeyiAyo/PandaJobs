@@ -3,29 +3,18 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-    <div class="container mx-auto px-4">
-        <h1 class="text-3xl font-bold text-center my-8">Welcome to Panda Jobs</h1>
+{% include 'search.html' %}
 
-        <h2 class="text-xl font-semibold text-center mb-4">Newest Jobs</h2>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {% for job in jobs %}
-                <div class="bg-white shadow-md rounded-lg overflow-hidden h-full">
-                    <div class="p-6 h-full flex flex-col justify-between">
-                        <div>
-                            <div class="font-semibold text-lg text-gray-800 mb-2">{{ job.title }}</div>
-                            <div class="text-gray-600 mb-2">{{ job.company }}</div>
-                            <div class="text-gray-500">{{ job.created_at }}</div>
-                        </div>
-                        <div>
-                            <p class="text-gray-700">{{ job.summary }}</p>
-                            <div class="mt-auto">
-                                <a href="{% url 'job_detail' job.id %}" class="text-blue-500 font-semibold hover:underline">View Details</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
+<div class="container mx-auto mt-8">
+    <h2 class="text-2xl font-semibold mb-4">Latest Job Openings</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {% for job in jobs %}
+        <div class="bg-white p-4 shadow-md rounded-lg">
+            <h3 class="text-lg font-semibold">{{ job.title }}</h3>
+            <p class="text-gray-600">Company: {{ job.company_name }}</p> <!-- Indicating the company -->
+            <a href="{% url 'job_detail' job.id %}" class="py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-300 inline-block mt-2">View Details</a>
         </div>
+        {% endfor %}
     </div>
+</div>
 {% endblock %}
