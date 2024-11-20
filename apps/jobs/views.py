@@ -70,14 +70,24 @@ def apply(request, job_id):
     
     return render(request, 'apply.html', {'form':form, 'job':job})
 
+def job_list(request):
+    """View function for listing all jobs with search and filtering."""
+    jobs = Job.objects.filter(status=Job.OPEN).order_by('-created_at')
+    return render(request, 'jobs/job_list.html', {'jobs': jobs})
 
 def search(request):
-    if request.method == 'POST':
-        query = request.POST.get('query')
-        company_name = request.POST.get('company_name')
-        company_location = request.POST.get('company_location')
-        company_size = request.POST.get('company_size')
+    """Handle both GET and POST requests for job search."""
+    if request.method in ['GET', 'POST']:
+        # Get parameters from either GET or POST
+        query = request.GET.get('query') or request.POST.get('query')
+        company_name = request.GET.get('company_name') or request.POST.get('company_name')
+        company_location = request.GET.get('company_location') or request.POST.get('company_location')
+        company_size = request.GET.get('company_size') or request.POST.get('company_size')
 
-        return HttpResponseRedirect(reverse('api_search') + f'?query={query}&company_name={company_name}&company_location={company_location}&company_size={company_size}')
+        # If any search parameters are provided, redirect to API search
+        if any([query, company_name, company_location, company_size]):
+            return HttpResponseRedirect(reverse('api_search') + 
+                f'?query={query or ""}&company_name={company_name or ""}&company_location={company_location or ""}&company_size={company_size or ""}')
 
+    # If no search parameters or initial page load, render the search form
     return render(request, 'search.html', {'countries':countries})

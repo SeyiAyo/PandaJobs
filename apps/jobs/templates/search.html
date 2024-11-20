@@ -1,43 +1,110 @@
+{% extends 'base.html' %}
+
+{% block title %}Search Jobs{% endblock %}
+
 {% block content %}
-<div class="container mx-auto mt-8">
-    <div class="">
-        <h1 class="text-3xl font-bold mb-4 text-center">The Easiest Way To Get Your Dream Job
-        </h1>
+<div class="bg-gray-50 py-12">
+    <div class="container mx-auto px-4">
+        <!-- Search Header -->
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">Find Your Dream Job</h1>
+            <p class="text-xl text-gray-600">Search through thousands of jobs from top companies</p>
+        </div>
 
-        <form id="search-form" class="mb-4">
-            <div class="mb-4">
-                <label for="query" class="block text-gray-700 font-semibold"></label>
-                <input type="text" id="query" name="query" class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" placeholder="Search for jobs" required>
-            </div>
-            <div class="mb-4">
-                <label for="company_country" class="block text-gray-700 font-semibold">Country</label>
-                <select id="company_country" name="company_country" class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
-                    <option value="" selected>All</option>
-                    {% for code, name in countries %}
-                        <option value="{{ code }}">{{ name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="mb-8">
-                <label for="company_size" class="block text-gray-700 font-semibold">Company Size</label>
-                <select id="company_size" name="company_size" class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
-                    <option value="" selected>All</option>
-                    <option value="size_1-9">1-9</option>
-                    <option value="size_10-49">10-49</option>
-                    <option value="size_50-99">50-99</option>
-                    <option value="size_100">100+</option>
-                </select>
-            </div>
-            <div class="flex justify-center">
-                <button type="submit" class="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 focus:outline-none focus:bg-indigo-700">Search</button>
-            </div>
-        </form>
+        <!-- Search Form -->
+        <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-6 mb-8">
+            <form id="search-form" class="space-y-6">
+                <!-- Search Input -->
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fas fa-search text-gray-400"></i>
+                    </div>
+                    <input type="text" id="query" name="query" 
+                           class="block w-full pl-10 pr-3 py-4 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                           placeholder="Job title, keywords, or company" required>
+                </div>
 
-        <div id="job-results" class="mt-8"></div>
+                <!-- Filters -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Location -->
+                    <div>
+                        <label for="company_country" class="block text-sm font-medium text-gray-700 mb-2">Location</label>
+                        <div class="relative">
+                            <select id="company_country" name="company_country" 
+                                    class="block w-full pl-3 pr-10 py-3 text-base border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                                <option value="" selected>All Locations</option>
+                                {% for code, name in countries %}
+                                    <option value="{{ code }}">{{ name }}</option>
+                                {% endfor %}
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                                <i class="fas fa-chevron-down text-gray-400"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Company Size -->
+                    <div>
+                        <label for="company_size" class="block text-sm font-medium text-gray-700 mb-2">Company Size</label>
+                        <div class="relative">
+                            <select id="company_size" name="company_size" 
+                                    class="block w-full pl-3 pr-10 py-3 text-base border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                                <option value="" selected>All Sizes</option>
+                                <option value="size_1-9">1-9 employees</option>
+                                <option value="size_10-49">10-49 employees</option>
+                                <option value="size_50-99">50-99 employees</option>
+                                <option value="size_100">100+ employees</option>
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                                <i class="fas fa-chevron-down text-gray-400"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Work Type -->
+                    <div>
+                        <label for="work_type" class="block text-sm font-medium text-gray-700 mb-2">Work Type</label>
+                        <div class="relative">
+                            <select id="work_type" name="work_type" 
+                                    class="block w-full pl-3 pr-10 py-3 text-base border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                                <option value="" selected>All Types</option>
+                                <option value="remote">Remote</option>
+                                <option value="onsite">On-site</option>
+                                <option value="hybrid">Hybrid</option>
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                                <i class="fas fa-chevron-down text-gray-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Search Button -->
+                <div class="flex justify-center">
+                    <button type="submit" 
+                            class="px-8 py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200">
+                        <i class="fas fa-search mr-2"></i>
+                        Search Jobs
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Results Section -->
+        <div id="job-results" class="max-w-4xl mx-auto">
+            <!-- Loading Spinner (hidden by default) -->
+            <div id="loading-spinner" class="hidden">
+                <div class="flex justify-center items-center py-12">
+                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                </div>
+            </div>
+
+            <!-- Results will be populated here -->
+        </div>
     </div>
 </div>
 
-
+{% block scripts %}
 <script>
     document.getElementById('search-form').addEventListener('submit', function(event) {
         event.preventDefault();
@@ -45,88 +112,110 @@
     });
 
     function performSearch() {
-        var query = document.getElementById('query').value.trim();
-        var companyCountry = document.getElementById('company_country').value.trim();
-        var companySize = document.getElementById('company_size').value.trim();
+        // Show loading spinner
+        document.getElementById('loading-spinner').classList.remove('hidden');
+        
+        // Get form values
+        const query = document.getElementById('query').value.trim();
+        const country = document.getElementById('company_country').value;
+        const companySize = document.getElementById('company_size').value;
+        const workType = document.getElementById('work_type').value;
 
-        if (!query) {
-            alert('Please enter a search query.');
-            return;
-        }
+        // Prepare the request
+        const url = '/jobs/api/search/';
+        const data = {
+            query: query,
+            company_country: country,
+            company_size: companySize,
+            work_type: workType
+        };
 
-        var data = {
-            'query': query,
-            'company_country': companyCountry,
-            'company_size': companySize
-        }
+        // Get CSRF token
+        const csrftoken = getCookie('csrftoken');
 
-        fetch('jobs/search/api/', {
+        // Make API request
+        fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRFToken': getCookie('csrftoken')
+                'X-CSRFToken': csrftoken,
             },
             body: JSON.stringify(data)
         })
-        .then(function(response) {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
+        .then(response => response.json())
+        .then(data => {
+            // Hide loading spinner
+            document.getElementById('loading-spinner').classList.add('hidden');
+            displayJobs(data.jobs);
         })
-        .then(function(result) {
-            console.log('Success', result.jobs);
-            displayJobs(result.jobs);
-        })
-        .catch(function(error) {
-            console.error('Error', error);
-            alert('An error occurred while performing the search.');
+        .catch(error => {
+            console.error('Error:', error);
+            // Hide loading spinner
+            document.getElementById('loading-spinner').classList.add('hidden');
+            // Show error message
+            const resultsDiv = document.getElementById('job-results');
+            resultsDiv.innerHTML = `
+                <div class="text-center py-12">
+                    <div class="text-red-600 mb-4">
+                        <i class="fas fa-exclamation-circle text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Oops! Something went wrong</h3>
+                    <p class="text-gray-600">Please try again later</p>
+                </div>
+            `;
         });
     }
 
     function displayJobs(jobs) {
-        var jobResults = document.getElementById('job-results');
-        jobResults.innerHTML = '';
-
-        if (jobs.length === 0) {
-            var noResultsMessage = document.createElement('p');
-            noResultsMessage.textContent = 'No jobs found.';
-            noResultsMessage.classList.add('text-red-500', 'font-bold', 'text-lg', 'my-4');
-            jobResults.appendChild(noResultsMessage);
-        } else {
-            jobs.forEach(function(job) {
-                var div = document.createElement('div');
-                div.classList.add('bg-white', 'p-6', 'rounded-lg', 'shadow-md', 'mb-4');
-
-                var h3 = document.createElement('h3');
-                h3.classList.add('text-xl', 'font-bold', 'text-indigo-600', 'mb-2');
-                h3.textContent = job.title;
-
-                var companyPara = document.createElement('p');
-                companyPara.classList.add('text-gray-600', 'mb-2');
-                companyPara.textContent = 'Company: ' + job.company_name;
-
-                var detailsLink = document.createElement('a');
-                detailsLink.classList.add('text-blue-500', 'hover:text-blue-700', 'font-bold');
-                detailsLink.setAttribute('href', job.url);
-                detailsLink.textContent = 'View Details';
-
-                div.appendChild(h3);
-                div.appendChild(companyPara);
-                div.appendChild(detailsLink);
-
-                jobResults.appendChild(div);
-            });
+        const resultsDiv = document.getElementById('job-results');
+        
+        if (!jobs || jobs.length === 0) {
+            resultsDiv.innerHTML = `
+                <div class="text-center py-12">
+                    <div class="text-gray-400 mb-4">
+                        <i class="fas fa-search text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">No jobs found</h3>
+                    <p class="text-gray-600">Try adjusting your search criteria</p>
+                </div>
+            `;
+            return;
         }
+
+        const jobsHTML = jobs.map(job => `
+            <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 mb-4 overflow-hidden">
+                <a href="${job.url}" class="block p-6">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-900 mb-2">${job.title}</h3>
+                            <div class="flex items-center text-gray-600 text-sm mb-2">
+                                <span class="mr-4"><i class="fas fa-building mr-2"></i>${job.company_name}</span>
+                                ${job.company_location ? `<span class="mr-4"><i class="fas fa-map-marker-alt mr-2"></i>${job.company_location}</span>` : ''}
+                                ${job.work_type_display ? `<span><i class="fas fa-laptop-house mr-2"></i>${job.work_type_display}</span>` : ''}
+                            </div>
+                            ${job.summary ? `<p class="text-gray-600 mb-4">${job.summary}</p>` : ''}
+                        </div>
+                        <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
+                            ${job.salary_min && job.salary_max ? `$${job.salary_min}k - $${job.salary_max}k` : 'Salary not specified'}
+                        </span>
+                    </div>
+                    <div class="flex items-center text-sm text-gray-500">
+                        <span class="mr-4"><i class="far fa-clock mr-1"></i>${job.created_at}</span>
+                        ${job.company_size_display ? `<span><i class="fas fa-users mr-1"></i>${job.company_size_display}</span>` : ''}
+                    </div>
+                </a>
+            </div>
+        `).join('');
+
+        resultsDiv.innerHTML = jobsHTML;
     }
 
-    // Function to get CSRF token from cookie
     function getCookie(name) {
-        var cookieValue = null;
+        let cookieValue = null;
         if (document.cookie && document.cookie !== '') {
-            var cookies = document.cookie.split(';');
-            for (var i = 0; i < cookies.length; i++) {
-                var cookie = cookies[i].trim();
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
                 if (cookie.substring(0, name.length + 1) === (name + '=')) {
                     cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
                     break;
@@ -136,4 +225,5 @@
         return cookieValue;
     }
 </script>
+{% endblock %}
 {% endblock %}
