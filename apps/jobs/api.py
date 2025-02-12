@@ -4,94 +4,80 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.serializers.json import DjangoJSONEncoder
 from django.urls import reverse
-
 from .models import Job
+from .external_api import JobSearchAPI
 
 @csrf_exempt
 def api_search(request):
-    """API endpoint for searching jobs with various filters."""
-    jobslist = []
-    try:
-        # Get search parameters from request
-        if request.method == 'GET':
-            params = request.GET
-        elif request.method == 'POST':
-            try:
-                if request.body:
-                    params = json.loads(request.body)
-                else:
-                    params = request.POST
-            except json.JSONDecodeError as e:
-                return JsonResponse({
-                    'error': 'Invalid JSON data',
-                    'details': str(e)
-                }, status=400)
-        else:
-            return JsonResponse({
-                'error': f'Method {request.method} not allowed',
-                'allowed_methods': ['GET', 'POST']
-            }, status=405)
-
-        # Extract search parameters
-        query = params.get('query', '').strip()
-        company_name = params.get('company_name', '').strip()
-        company_location = params.get('company_location', '').strip()
-        company_country = params.get('company_country', '').strip()
-        company_size = params.get('company_size', '').strip()
-
-        # Build the query
-        jobs = Job.objects.filter(status=Job.OPEN)
+    query = request.GET.get('query', '')
+    location = request.GET.get('location', '')
+    source = request.GET.get('source', 'local')  # 'local' or 'external'
+    page = int(request.GET.get('page', '1'))
+    
+    if source == 'external':
+        # Use external API
+        api = JobSearchAPI()
+        results = api.search_jobs(query, location, page)
+        
+        if 'error' in results:
+            return JsonResponse({'error': results['error']}, status=400)
+            
+        # Transform the external API response to match our format
+        jobs = []
+        for job in results.get('data', []):
+            jobs.append({
+                'id': job.get('id'),
+                'title': job.get('title'),
+                'company_name': job.get('company_name'),
+                'company_location': job.get('company_location'),
+                'description': job.get('description'),
+                'url': job.get('url'),
+                'source': 'external',
+                'job_type': job.get('job_type', ''),
+                'posted_at': job.get('posted_at', ''),
+                'salary': job.get('salary', '')
+            })
+            
+        return JsonResponse({
+            'jobs': jobs,
+            'has_next': len(jobs) >= 10  # JSearch returns 10 results per page
+        })
+    
+    else:
+        # Use local database
+        jobs_query = Job.objects.filter(status=Job.OPEN)
         
         if query:
-            jobs = jobs.filter(
-                Q(title__icontains=query) | 
-                Q(full_description__icontains=query) | 
+            jobs_query = jobs_query.filter(
+                Q(title__icontains=query) |
+                Q(description__icontains=query) |
                 Q(company_name__icontains=query)
             )
-
-        if company_name:
-            jobs = jobs.filter(company_name__icontains=company_name)
-
-        if company_location:
-            jobs = jobs.filter(company_location__icontains=company_location)
             
-        if company_country:
-            jobs = jobs.filter(company_country=company_country)
-
-        if company_size:
-            jobs = jobs.filter(company_size=company_size)
-
+        if location:
+            jobs_query = jobs_query.filter(
+                Q(company_location__icontains=location)
+            )
+            
         # Order by most recent
-        jobs = jobs.order_by('-created_at')
-
-        # Build response data
-        for job in jobs:
-            job_url = reverse('job_detail', kwargs={'job_id': job.id})
-            jobslist.append({
-                'id': job.id,
-                'title': job.title,
-                'summary': job.summary,
-                'company_name': job.company_name,
-                'company_location': job.company_location or '',
-                'company_country': str(job.company_country),
-                'company_size': job.company_size,
-                'company_size_display': job.get_company_size_display(),
-                'work_type': job.work_type,
-                'work_type_display': job.get_work_type_display(),
-                'salary_min': float(job.salary_min) if job.salary_min else None,
-                'salary_max': float(job.salary_max) if job.salary_max else None,
-                'created_at': job.created_at.strftime('%Y-%m-%d %H:%M:%S'),
-                'status': job.status,
-                'status_display': job.get_status_display(),
-                'url': job_url  # Add the job detail URL
-            })
+        jobs_query = jobs_query.order_by('-created_at')
+        
+        # Paginate results
+        start = (page - 1) * 10
+        end = start + 10
+        jobs_page = jobs_query[start:end]
+        
+        jobs = [{
+            'id': job.id,
+            'title': job.title,
+            'company_name': job.company_name,
+            'company_location': job.company_location,
+            'description': job.description,
+            'url': f'/jobs/{job.id}/',
+            'source': 'local'
+        } for job in jobs_page]
         
         return JsonResponse({
-            'count': len(jobslist),
-            'jobs': jobslist
+            'jobs': jobs,
+            'has_next': jobs_query.count() > end
         })
-    except Exception as e:
-        return JsonResponse({
-            'error': 'An error occurred while processing your request',
-            'details': str(e)
-        }, status=400)

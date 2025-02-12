@@ -2,3 +2,26 @@ venv
 *.log
 __pycache__/
 *.pyc
+
+# Frontend
+node_modules/
+/dist/
+/build/
+.cache/
+.env.local
+.env.*.local
+
+# Dependencies
+package-lock.json
+yarn.lock
+yarn-error.log
+
+# IDE/Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Misc
+.DS_Store
+Thumbs.db

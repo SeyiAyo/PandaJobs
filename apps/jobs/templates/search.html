@@ -3,87 +3,31 @@
 {% block title %}Search Jobs{% endblock %}
 
 {% block content %}
-<div class="bg-gray-50 py-12">
-    <div class="container mx-auto px-4">
-        <!-- Search Header -->
-        <div class="text-center mb-12">
-            <h1 class="text-4xl font-bold text-gray-900 mb-4">Find Your Dream Job</h1>
-            <p class="text-xl text-gray-600">Search through thousands of jobs from top companies</p>
-        </div>
-
+<div class="bg-gray-100 min-h-screen py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Search Form -->
-        <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-6 mb-8">
-            <form id="search-form" class="space-y-6">
-                <!-- Search Input -->
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <i class="fas fa-search text-gray-400"></i>
-                    </div>
-                    <input type="text" id="query" name="query" 
-                           class="block w-full pl-10 pr-3 py-4 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                           placeholder="Job title, keywords, or company" required>
-                </div>
-
-                <!-- Filters -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <!-- Location -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Search Jobs</h2>
+            <form id="search-form" class="space-y-4" method="GET">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
-                        <label for="company_country" class="block text-sm font-medium text-gray-700 mb-2">Location</label>
-                        <div class="relative">
-                            <select id="company_country" name="company_country" 
-                                    class="block w-full pl-3 pr-10 py-3 text-base border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
-                                <option value="" selected>All Locations</option>
-                                {% for code, name in countries %}
-                                    <option value="{{ code }}">{{ name }}</option>
-                                {% endfor %}
-                            </select>
-                            <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                                <i class="fas fa-chevron-down text-gray-400"></i>
-                            </div>
-                        </div>
+                        <label for="query" class="block text-sm font-medium text-gray-700">Keywords</label>
+                        <input type="text" name="query" id="query" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                     </div>
-
-                    <!-- Company Size -->
                     <div>
-                        <label for="company_size" class="block text-sm font-medium text-gray-700 mb-2">Company Size</label>
-                        <div class="relative">
-                            <select id="company_size" name="company_size" 
-                                    class="block w-full pl-3 pr-10 py-3 text-base border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
-                                <option value="" selected>All Sizes</option>
-                                <option value="size_1-9">1-9 employees</option>
-                                <option value="size_10-49">10-49 employees</option>
-                                <option value="size_50-99">50-99 employees</option>
-                                <option value="size_100">100+ employees</option>
-                            </select>
-                            <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                                <i class="fas fa-chevron-down text-gray-400"></i>
-                            </div>
-                        </div>
+                        <label for="location" class="block text-sm font-medium text-gray-700">Location</label>
+                        <input type="text" name="location" id="location" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                     </div>
-
-                    <!-- Work Type -->
                     <div>
-                        <label for="work_type" class="block text-sm font-medium text-gray-700 mb-2">Work Type</label>
-                        <div class="relative">
-                            <select id="work_type" name="work_type" 
-                                    class="block w-full pl-3 pr-10 py-3 text-base border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
-                                <option value="" selected>All Types</option>
-                                <option value="remote">Remote</option>
-                                <option value="onsite">On-site</option>
-                                <option value="hybrid">Hybrid</option>
-                            </select>
-                            <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                                <i class="fas fa-chevron-down text-gray-400"></i>
-                            </div>
-                        </div>
+                        <label for="source" class="block text-sm font-medium text-gray-700">Search Source</label>
+                        <select name="source" id="source" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <option value="local">Local Jobs</option>
+                            <option value="external">External Jobs</option>
+                        </select>
                     </div>
                 </div>
-
-                <!-- Search Button -->
-                <div class="flex justify-center">
-                    <button type="submit" 
-                            class="px-8 py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200">
-                        <i class="fas fa-search mr-2"></i>
+                <div class="flex justify-end">
+                    <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                         Search Jobs
                     </button>
                 </div>
@@ -92,123 +36,28 @@
 
         <!-- Results Section -->
         <div id="job-results" class="max-w-4xl mx-auto">
-            <!-- Loading Spinner (hidden by default) -->
+            <!-- Loading Spinner -->
             <div id="loading-spinner" class="hidden">
                 <div class="flex justify-center items-center py-12">
                     <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
                 </div>
             </div>
+        </div>
 
-            <!-- Results will be populated here -->
+        <!-- Load More Button -->
+        <div id="load-more-container" class="text-center mt-8 hidden">
+            <button id="load-more" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                Load More
+            </button>
         </div>
     </div>
 </div>
+{% endblock %}
 
 {% block scripts %}
 <script>
-    document.getElementById('search-form').addEventListener('submit', function(event) {
-        event.preventDefault();
-        performSearch();
-    });
-
-    function performSearch() {
-        // Show loading spinner
-        document.getElementById('loading-spinner').classList.remove('hidden');
-        
-        // Get form values
-        const query = document.getElementById('query').value.trim();
-        const country = document.getElementById('company_country').value;
-        const companySize = document.getElementById('company_size').value;
-        const workType = document.getElementById('work_type').value;
-
-        // Prepare the request
-        const url = '/jobs/api/search/';
-        const data = {
-            query: query,
-            company_country: country,
-            company_size: companySize,
-            work_type: workType
-        };
-
-        // Get CSRF token
-        const csrftoken = getCookie('csrftoken');
-
-        // Make API request
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': csrftoken,
-            },
-            body: JSON.stringify(data)
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Hide loading spinner
-            document.getElementById('loading-spinner').classList.add('hidden');
-            displayJobs(data.jobs);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            // Hide loading spinner
-            document.getElementById('loading-spinner').classList.add('hidden');
-            // Show error message
-            const resultsDiv = document.getElementById('job-results');
-            resultsDiv.innerHTML = `
-                <div class="text-center py-12">
-                    <div class="text-red-600 mb-4">
-                        <i class="fas fa-exclamation-circle text-4xl"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Oops! Something went wrong</h3>
-                    <p class="text-gray-600">Please try again later</p>
-                </div>
-            `;
-        });
-    }
-
-    function displayJobs(jobs) {
-        const resultsDiv = document.getElementById('job-results');
-        
-        if (!jobs || jobs.length === 0) {
-            resultsDiv.innerHTML = `
-                <div class="text-center py-12">
-                    <div class="text-gray-400 mb-4">
-                        <i class="fas fa-search text-4xl"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">No jobs found</h3>
-                    <p class="text-gray-600">Try adjusting your search criteria</p>
-                </div>
-            `;
-            return;
-        }
-
-        const jobsHTML = jobs.map(job => `
-            <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 mb-4 overflow-hidden">
-                <a href="${job.url}" class="block p-6">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <h3 class="text-xl font-semibold text-gray-900 mb-2">${job.title}</h3>
-                            <div class="flex items-center text-gray-600 text-sm mb-2">
-                                <span class="mr-4"><i class="fas fa-building mr-2"></i>${job.company_name}</span>
-                                ${job.company_location ? `<span class="mr-4"><i class="fas fa-map-marker-alt mr-2"></i>${job.company_location}</span>` : ''}
-                                ${job.work_type_display ? `<span><i class="fas fa-laptop-house mr-2"></i>${job.work_type_display}</span>` : ''}
-                            </div>
-                            ${job.summary ? `<p class="text-gray-600 mb-4">${job.summary}</p>` : ''}
-                        </div>
-                        <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
-                            ${job.salary_min && job.salary_max ? `$${job.salary_min}k - $${job.salary_max}k` : 'Salary not specified'}
-                        </span>
-                    </div>
-                    <div class="flex items-center text-sm text-gray-500">
-                        <span class="mr-4"><i class="far fa-clock mr-1"></i>${job.created_at}</span>
-                        ${job.company_size_display ? `<span><i class="fas fa-users mr-1"></i>${job.company_size_display}</span>` : ''}
-                    </div>
-                </a>
-            </div>
-        `).join('');
-
-        resultsDiv.innerHTML = jobsHTML;
-    }
+    let currentPage = 1;
+    let hasNextPage = false;
 
     function getCookie(name) {
         let cookieValue = null;
@@ -224,6 +73,161 @@
         }
         return cookieValue;
     }
+
+    async function performSearch(append = false) {
+        const query = document.getElementById('query').value;
+        const location = document.getElementById('location').value;
+        const source = document.getElementById('source').value;
+        
+        if (!append) {
+            currentPage = 1;
+        }
+
+        const spinner = document.getElementById('loading-spinner');
+        const loadMoreContainer = document.getElementById('load-more-container');
+        spinner.classList.remove('hidden');
+        loadMoreContainer.classList.add('hidden');
+
+        try {
+            const params = new URLSearchParams({
+                query: query,
+                location: location,
+                source: source,
+                page: currentPage
+            });
+
+            const response = await fetch(`/jobs/api/search/?${params}`);
+            const data = await response.json();
+
+            if (!append) {
+                document.getElementById('job-results').innerHTML = '';
+            }
+
+            if (data.error) {
+                displayError(data.error);
+                return;
+            }
+
+            displayJobs(data.jobs, append);
+            hasNextPage = data.has_next;
+            loadMoreContainer.classList.toggle('hidden', !hasNextPage);
+
+        } catch (error) {
+            displayError('An error occurred while searching for jobs');
+            console.error('Search error:', error);
+        } finally {
+            spinner.classList.add('hidden');
+        }
+    }
+
+    function displayJobs(jobs, append = false) {
+        const resultsDiv = document.getElementById('job-results');
+        
+        if (!append) {
+            resultsDiv.innerHTML = '';
+        }
+        
+        if (!jobs || jobs.length === 0 && !append) {
+            resultsDiv.innerHTML = `
+                <div class="text-center py-12">
+                    <div class="text-gray-400 mb-4">
+                        <i class="fas fa-search text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">No jobs found</h3>
+                    <p class="text-gray-600">Try adjusting your search criteria</p>
+                </div>
+            `;
+            return;
+        }
+
+        const jobsContainer = append ? resultsDiv : document.createElement('div');
+        
+        jobs.forEach(job => {
+            const jobElement = document.createElement('div');
+            jobElement.className = 'bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 mb-4 overflow-hidden';
+            
+            jobElement.innerHTML = `
+                <a href="${job.url}" class="block p-6" target="${job.source === 'external' ? '_blank' : '_self'}">
+                    <div class="flex justify-between items-start">
+                        <div class="flex-1">
+                            <div class="flex items-center">
+                                <h3 class="text-xl font-semibold text-gray-900">${job.title}</h3>
+                                <span class="ml-2 px-2 py-1 text-xs font-medium rounded-full ${job.source === 'external' ? 'bg-purple-100 text-purple-800' : 'bg-green-100 text-green-800'}">
+                                    ${job.source === 'external' ? 'External' : 'Local'}
+                                </span>
+                            </div>
+                            <div class="mt-2 flex items-center text-gray-600 text-sm">
+                                <span class="mr-4"><i class="fas fa-building mr-2"></i>${job.company_name}</span>
+                                ${job.company_location ? `<span><i class="fas fa-map-marker-alt mr-2"></i>${job.company_location}</span>` : ''}
+                            </div>
+                            ${job.job_type ? `
+                                <div class="mt-2 text-sm text-gray-600">
+                                    <i class="fas fa-briefcase mr-2"></i>${job.job_type}
+                                </div>
+                            ` : ''}
+                            ${job.salary ? `
+                                <div class="mt-2 text-sm text-gray-600">
+                                    <i class="fas fa-money-bill-wave mr-2"></i>${job.salary}
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                </a>
+            `;
+            
+            if (!append) {
+                jobsContainer.appendChild(jobElement);
+            } else {
+                resultsDiv.appendChild(jobElement);
+            }
+        });
+
+        if (!append) {
+            resultsDiv.appendChild(jobsContainer);
+        }
+    }
+
+    function displayError(message) {
+        const resultsDiv = document.getElementById('job-results');
+        resultsDiv.innerHTML = `
+            <div class="bg-red-50 border-l-4 border-red-400 p-4 mb-4">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-exclamation-circle text-red-400"></i>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm text-red-700">${message}</p>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // Initialize search if URL has parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('query') || urlParams.has('location') || urlParams.has('source')) {
+        document.getElementById('query').value = urlParams.get('query') || '';
+        document.getElementById('location').value = urlParams.get('location') || '';
+        document.getElementById('source').value = urlParams.get('source') || 'local';
+        performSearch();
+    }
+
+    document.getElementById('search-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        await performSearch();
+        
+        // Update URL with search parameters
+        const query = document.getElementById('query').value;
+        const location = document.getElementById('location').value;
+        const source = document.getElementById('source').value;
+        const params = new URLSearchParams({ query, location, source });
+        const newUrl = `${window.location.pathname}?${params}`;
+        window.history.pushState({}, '', newUrl);
+    });
+
+    document.getElementById('load-more').addEventListener('click', async () => {
+        currentPage++;
+        await performSearch(true);
+    });
 </script>
-{% endblock %}
 {% endblock %}

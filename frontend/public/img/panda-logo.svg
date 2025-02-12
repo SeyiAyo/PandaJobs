@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Head -->
+  <circle cx="256" cy="256" r="240" fill="white" stroke="black" stroke-width="16"/>
+  
+  <!-- Ears -->
+  <circle cx="126" cy="126" r="60" fill="black"/>
+  <circle cx="386" cy="126" r="60" fill="black"/>
+  
+  <!-- Eyes -->
+  <ellipse cx="186" cy="246" rx="40" ry="50" fill="black"/>
+  <ellipse cx="326" cy="246" rx="40" ry="50" fill="black"/>
+  
+  <!-- Nose -->
+  <circle cx="256" cy="306" r="20" fill="black"/>
+  
+  <!-- Mouth -->
+  <path d="M206 346 Q256 386 306 346" stroke="black" stroke-width="12" fill="none"/>
+</svg>

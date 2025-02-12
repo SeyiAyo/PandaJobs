@@ -77,17 +77,5 @@ def job_list(request):
 
 def search(request):
     """Handle both GET and POST requests for job search."""
-    if request.method in ['GET', 'POST']:
-        # Get parameters from either GET or POST
-        query = request.GET.get('query') or request.POST.get('query')
-        company_name = request.GET.get('company_name') or request.POST.get('company_name')
-        company_location = request.GET.get('company_location') or request.POST.get('company_location')
-        company_size = request.GET.get('company_size') or request.POST.get('company_size')
-
-        # If any search parameters are provided, redirect to API search
-        if any([query, company_name, company_location, company_size]):
-            return HttpResponseRedirect(reverse('api_search') + 
-                f'?query={query or ""}&company_name={company_name or ""}&company_location={company_location or ""}&company_size={company_size or ""}')
-
-    # If no search parameters or initial page load, render the search form
-    return render(request, 'search.html', {'countries':countries})
+    # Just render the search template, all searching is handled by JavaScript
+    return render(request, 'search.html', {'countries': countries})
