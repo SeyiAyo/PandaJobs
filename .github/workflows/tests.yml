@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - master
+      - rehd-devops
   pull_request:
     branches:
       - main
