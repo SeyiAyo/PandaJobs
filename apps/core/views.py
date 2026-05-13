@@ -1,9 +1,14 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from apps.userprofile.models import UserProfile
 
 from apps.jobs.models import Job
+
+
+def health_check(request):
+    return JsonResponse({"status": "ok"})
 
 def frontpage(request):
     jobs = Job.objects.filter(status=Job.OPEN).order_by('-created_at')[0:10]

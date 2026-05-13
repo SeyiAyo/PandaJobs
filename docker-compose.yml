@@ -9,4 +9,10 @@ services:
       - .env.dev
     ports:
       - "8000:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import sys, urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health/', timeout=3); sys.exit(0)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
     command: python manage.py runserver 0.0.0.0:8000
