@@ -15,6 +15,13 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+try:
+    import whitenoise  # noqa: F401
+except ImportError:
+    WHITENOISE_INSTALLED = False
+else:
+    WHITENOISE_INSTALLED = True
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,6 +32,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-5z0#1a49u=mm%a@ui*y2r1b77fkq(=@qdt1ei=95f^72=poju^')
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-xmh=%hypcgda6mw)99qtqscr(=j#dp543hupn1nji2&ao3gznc')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DJANGO_DEBUG', 'True') == 'True'
@@ -64,6 +72,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+if WHITENOISE_INSTALLED:
+    MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
 
 ROOT_URLCONF = 'pandajobs.urls'
 
@@ -134,6 +145,8 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'static'
+if WHITENOISE_INSTALLED:
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATICDIRS = [
     os.path.join(BASE_DIR, 'apps/core/static'),
     os.path.join(BASE_DIR, 'apps/jobs/static'),

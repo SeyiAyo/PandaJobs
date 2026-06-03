@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: pandajobs
+    runtime: image
+    image:
+      # Replace with your Docker Hub username before creating the Render service.
+      url: docker.io/rehdmike/pandajobs:latest
+    plan: starter
+    healthCheckPath: /health/
+    envVars:
+      - key: DJANGO_SECRET_KEY
+        sync: false
+      - key: DJANGO_DEBUG
+        value: "False"
+      - key: DJANGO_ALLOWED_HOSTS
+        value: "pandajobs.onrender.com"

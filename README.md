@@ -28,4 +28,5 @@ Installation and Usage:
 
 5. Access the application at http://localhost:8000/
 
-
+Render deploy:
+Create the Render service from [render.yaml](/home/rehd/Desktop/PandaJobs/render.yaml), replace the Docker Hub username placeholder in that file, set `DJANGO_SECRET_KEY` in Render, and create a GitHub secret named `RENDER_DEPLOY_HOOK_URL`. After a successful Docker build on the `rehd-devops` branch, GitHub Actions will trigger Render to deploy the freshly built `sha-...` image.

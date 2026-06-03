@@ -18,6 +18,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    env:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
 
     steps:
       - name: Check out repository
@@ -56,3 +59,16 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Trigger Render deploy
+        if: github.event_name == 'push' && github.ref == 'refs/heads/rehd-devops'
+        run: |
+          if [ -z "$RENDER_DEPLOY_HOOK_URL" ]; then
+            echo "RENDER_DEPLOY_HOOK_URL is not set" >&2
+            exit 1
+          fi
+
+          export IMAGE_URL="docker.io/${DOCKER_USERNAME}/pandajobs:sha-${GITHUB_SHA}"
+          ENCODED_IMAGE_URL="$(python -c 'import os, urllib.parse; print(urllib.parse.quote(os.environ["IMAGE_URL"], safe=""))' )"
+
+          curl -fsS -X POST "${RENDER_DEPLOY_HOOK_URL}&imgURL=${ENCODED_IMAGE_URL}"
