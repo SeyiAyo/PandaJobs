@@ -3,13 +3,7 @@ name: Tests
 on:
   push:
     branches:
-      - main
-      - master
       - rehd-devops
-  pull_request:
-    branches:
-      - main
-      - master
 
 jobs:
   django-tests:
